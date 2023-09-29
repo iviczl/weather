@@ -1,9 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit"
-import settlementReducer from "./settlementReducer"
+import { configureStore } from '@reduxjs/toolkit'
+import capitalReducer from './capitalReducer'
 
 const store = configureStore({
   reducer: {
-    settlement: settlementReducer,
+    capital: capitalReducer,
   },
 })
 

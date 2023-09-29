@@ -4,37 +4,55 @@ import { useEffect, useState } from 'react'
 import SearchInput from '../components/SearchInput'
 import SearchButton from '../components/SearchButton'
 import store from '../stores/store.js'
-import { settlementSelected } from '../stores/settlementReducer'
-import debounce from 'lodash.debounce'
-import { getAllSettlements } from '../services/settlementService'
+import { setCapitals, capitalSelected } from '../stores/capitalReducer'
+import { useFetch } from '../hooks/useFetch'
 
 export default function Search() {
+  const [isCapitalSelected, setIsCapitalSelected] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [searchList, setSearchList] = useState([])
+  const url = 'https://restcountries.com/v3.1/all?fields=capital'
+  const result = useFetch(url)
   const navigate = useNavigate()
 
-  const setSettlement = () => {
-    store.dispatch(settlementSelected(searchText))
+  const setCapital = () => {
+    store.dispatch(capitalSelected(searchText))
     navigate('/')
   }
 
-  const handleChange = (event) => {
-    setSearchText(event.target.value)
+  const itemSelected = (event) => {
+    setSearchText(event.detail)
+    setIsCapitalSelected(true)
   }
 
-  useEffect(
-    debounce(() => {
-      if (searchText.length < 2) {
-        return
-      }
-      const refreshList = async () => {
-        const list = await getAllSettlements(searchText)
-        setSearchList(list.map((item) => item.name))
-      }
-      refreshList()
-    }, 1000),
-    [searchText]
-  )
+  useEffect(() => {
+    document.addEventListener('item-selected', itemSelected)
+
+    return () => {
+      document.removeEventListener('item-selected', itemSelected)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!result.response) {
+      return
+    }
+    store.dispatch(setCapitals(result.response.map((item) => item.capital[0])))
+  }, [result.response])
+
+  useEffect(() => {
+    const refreshList = async () => {
+      const list = store
+        .getState()
+        .capital.capitals.filter(
+          (capital) =>
+            capital && capital.toLowerCase().includes(searchText.toLowerCase())
+        )
+        .slice(0, 8)
+      setSearchList(list)
+    }
+    refreshList()
+  }, [searchText])
 
   return (
     <div>
@@ -42,9 +60,12 @@ export default function Search() {
       <SearchInput
         filterText={searchText}
         filterList={searchList}
-        onChange={(event) => handleChange(event)}
+        onChange={(event) => {
+          setSearchText(event.target.value)
+          setIsCapitalSelected(false)
+        }}
       />
-      <SearchButton onClick={setSettlement} />
+      <SearchButton onClick={setCapital} visible={isCapitalSelected} />
     </div>
   )
 }

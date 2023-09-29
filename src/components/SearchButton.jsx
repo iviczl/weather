@@ -1,3 +1,7 @@
-export default function SearchButton({ onClick }) {
-  return <button onClick={onClick}>Save</button>
+export default function SearchButton({ onClick, visible }) {
+  return (
+    <button hidden={!visible} onClick={onClick}>
+      Save
+    </button>
+  )
 }
