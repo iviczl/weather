@@ -3,6 +3,7 @@ import Clock from '../components/Clock'
 import NavBar from '../components/NavBar'
 import { useFetch } from '../hooks/useFetch'
 import store from '../stores/store'
+import { timeStringFromEpoch } from '../utils/dateUtils'
 
 export default function Data() {
   const selectedCapital = store.getState().capital.selectedCapital
@@ -28,14 +29,8 @@ export default function Data() {
     setWeatherIcon(icon)
     setWeatherDescription(description)
     setWeatherTemp(String(temp))
-    const sunriseTime = new Date(sunrise)
-    setWeatherSunrise(
-      String(sunriseTime.getHours()) + ':' + String(sunriseTime.getMinutes())
-    )
-    const sunsetTime = new Date(sunset)
-    setWeatherSunset(
-      String(sunsetTime.getHours()) + ':' + String(sunsetTime.getMinutes())
-    )
+    setWeatherSunrise(timeStringFromEpoch(sunrise))
+    setWeatherSunset(timeStringFromEpoch(sunset))
   }, [result.response])
 
   return (
@@ -43,7 +38,9 @@ export default function Data() {
       <NavBar />
       <Clock />
       <p>{selectedCapital}</p>
-      <p>{weatherIcon}</p>
+      <p>
+        <i className={`owi owi-${weatherIcon}`} />
+      </p>
       <p>{weatherDescription}</p>
       <p>{weatherTemp}°C</p>
       <p>{weatherSunrise}</p>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { twoDigitTimeString } from '../utils/dateUtils'
 
 export default function Clock() {
   const [hours, setHours] = useState(new Date().getHours())
@@ -7,8 +8,8 @@ export default function Clock() {
   useEffect(() => {
     const timeout = setInterval(() => {
       const time = new Date()
-      setHours(time.getHours())
-      setMinutes(time.getMinutes())
+      setHours(twoDigitTimeString(time.getHours()))
+      setMinutes(twoDigitTimeString(time.getMinutes()))
     }, 1000)
     return () => clearInterval(timeout)
   }, [])
