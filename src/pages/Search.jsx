@@ -38,14 +38,17 @@ export default function Search() {
     const refreshList = async () => {
       const list =
         searchText.length > 0
-          ? store
-              .getState()
-              .capital.capitals.filter(
-                (capital) =>
-                  capital &&
-                  capital.toLowerCase().includes(searchText.toLowerCase())
+          ? new Array(
+              ...new Set(
+                store
+                  .getState()
+                  .capital.capitals.filter(
+                    (capital) =>
+                      capital &&
+                      capital.toLowerCase().includes(searchText.toLowerCase())
+                  )
               )
-              .slice(0, 8)
+            ).slice(0, 8)
           : []
       setSearchList(list)
     }
