@@ -1,9 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { getCapitals } from '../services/capitalService'
+import { FeatureState } from './featureState'
 
 const initialState = {
   capitals: [],
   selectedCapital: '',
+  state: FeatureState.IDLE,
+  error: [],
 }
+
+export const capitalList = createAsyncThunk(
+  'capitals/list',
+  (abortController) => getCapitals(abortController)
+)
 
 const capitalSlice = createSlice({
   name: 'capital',
@@ -12,9 +21,20 @@ const capitalSlice = createSlice({
     capitalSelected(state, action) {
       state.selectedCapital = action.payload
     },
-    setCapitals(state, action) {
-      state.capitals = action.payload
-    },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(capitalList.pending, (state) => {
+        state.status = FeatureState.LOADING
+      })
+      .addCase(capitalList.fulfilled, (state, action) => {
+        state.status = FeatureState.SUCCEEDED
+        state.capitals = action.payload.response.map((item) => item.capital[0])
+      })
+      .addCase(capitalList.rejected, (state, action) => {
+        state.status = FeatureState.REJECTED
+        state.error.push(action.payload.error)
+      })
   },
 })
 

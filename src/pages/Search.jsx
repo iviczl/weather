@@ -4,16 +4,17 @@ import { useEffect, useState } from 'react'
 import SearchInput from '../components/SearchInput'
 import SearchButton from '../components/SearchButton'
 import store from '../stores/store.js'
-import { setCapitals, capitalSelected } from '../stores/capitalReducer'
-import { useFetch } from '../hooks/useFetch'
+import { capitalSelected } from '../stores/capitalReducer'
+import { useFetchToStore } from '../hooks/useFetch'
+import { capitalList } from '../stores/capitalReducer'
 
 export default function Search() {
   const [isCapitalSelected, setIsCapitalSelected] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [searchList, setSearchList] = useState([])
-  const url = 'https://restcountries.com/v3.1/all?fields=capital'
-  const result = useFetch(url)
   const navigate = useNavigate()
+
+  useFetchToStore(capitalList)
 
   const setCapital = () => {
     store.dispatch(capitalSelected(searchText))
@@ -33,12 +34,12 @@ export default function Search() {
     }
   }, [])
 
-  useEffect(() => {
-    if (!result.response) {
-      return
-    }
-    store.dispatch(setCapitals(result.response.map((item) => item.capital[0])))
-  }, [result.response])
+  // useEffect(() => {
+  //   if (!result.response) {
+  //     return
+  //   }
+  //   store.dispatch(setCapitals(result.response.map((item) => item.capital[0])))
+  // }, [result.response])
 
   useEffect(() => {
     const refreshList = async () => {

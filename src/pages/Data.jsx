@@ -4,6 +4,7 @@ import NavBar from '../components/NavBar'
 import { useFetch } from '../hooks/useFetch'
 import store from '../stores/store'
 import { timeStringFromEpoch } from '../utils/dateUtils'
+import { getWeather } from '../services/weatherService'
 
 export default function Data() {
   const selectedCapital = store.getState().capital.selectedCapital
@@ -12,16 +13,15 @@ export default function Data() {
   const [weatherTemp, setWeatherTemp] = useState('')
   const [weatherSunrise, setWeatherSunrise] = useState('')
   const [weatherSunset, setWeatherSunset] = useState('')
-  const apiKey = '7c7471bd537f0fca341ce9b058c2b225'
-  const url = `https://api.openweathermap.org/data/2.5/weather?appid=${apiKey}&units=metric&q=${selectedCapital}`
-  const result = useFetch(url)
+
+  const { response } = useFetch(getWeather, { capital: selectedCapital })
 
   useEffect(() => {
-    if (!result.response) {
+    if (!response) {
       return
     }
 
-    const { weather, main, sys } = result.response
+    const { weather, main, sys } = response
     const { icon, description } = weather[0]
     const { temp } = main
     const { sunrise, sunset } = sys
@@ -31,7 +31,7 @@ export default function Data() {
     setWeatherTemp(String(temp))
     setWeatherSunrise(timeStringFromEpoch(sunrise))
     setWeatherSunset(timeStringFromEpoch(sunset))
-  }, [result.response])
+  }, [response])
 
   return (
     <div>

@@ -1,22 +1,21 @@
 import { useState, useEffect } from 'react'
+import store from '../stores/store'
 
-export function useFetch(url, options = {}) {
+export function useFetchToStore(storeMethod, params = {}) {
+  useEffect(() => {
+    const abortController = new AbortController()
+    store.dispatch(storeMethod(params, abortController))
+    return () => abortController.abort()
+  }, [])
+}
+
+export function useFetch(serviceMethod, params = {}) {
   const [response, setResponse] = useState(null)
   const [error, setError] = useState(null)
 
   useEffect(() => {
     const abortController = new AbortController()
-    const fetchData = async () => {
-      try {
-        const signal = abortController.signal
-        const res = await fetch(url, { ...options, signal })
-        const json = await res.json()
-        setResponse(json)
-      } catch (error) {
-        setError(error)
-      }
-    }
-    fetchData()
+    serviceMethod(abortController, setResponse, setError, params)
     return () => abortController.abort()
   }, [])
 
