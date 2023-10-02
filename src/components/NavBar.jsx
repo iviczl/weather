@@ -1,8 +1,10 @@
 import { NavLink } from 'react-router-dom'
 export default function NavBar() {
   return (
-    <>
-      <NavLink to='/'>{'<'}</NavLink>
-    </>
+    <p className='nav-bar'>
+      <NavLink to='/' className='nav-link'>
+        {'<'}
+      </NavLink>
+    </p>
   )
 }

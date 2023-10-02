@@ -5,6 +5,9 @@ import { useFetch } from '../hooks/useFetch'
 import store from '../stores/store'
 import { timeStringFromEpoch } from '../utils/dateUtils'
 import { getWeather } from '../services/weatherService'
+import temperature from '../assets/temperature_weather_icon.svg'
+import sunrise from '../assets/sunrise_weather_icon.svg'
+import sunset from '../assets/sunset_weather_icon.svg'
 
 export default function Data() {
   const selectedCapital = store.getState().capital.selectedCapital
@@ -28,7 +31,7 @@ export default function Data() {
 
     setWeatherIcon(icon)
     setWeatherDescription(description)
-    setWeatherTemp(String(temp))
+    setWeatherTemp(String(Math.round(temp)))
     setWeatherSunrise(timeStringFromEpoch(sunrise))
     setWeatherSunset(timeStringFromEpoch(sunset))
   }, [response])
@@ -37,14 +40,23 @@ export default function Data() {
     <div>
       <NavBar />
       <Clock place={selectedCapital} />
-      <p>{selectedCapital}</p>
+      <p className='selected-capital'>{selectedCapital}</p>
       <p>
         <i className={`owi owi-${weatherIcon}`} />
       </p>
-      <p>{weatherDescription}</p>
-      <p>{weatherTemp}°C</p>
-      <p>{weatherSunrise}</p>
-      <p>{weatherSunset}</p>
+      <p className='description'>{weatherDescription}</p>
+      <p className='weather-row'>
+        <img className='small-weather-icon' src={temperature} />
+        <span className='weather-data'>{weatherTemp} °C</span>
+      </p>
+      <p className='weather-row'>
+        <img className='small-weather-icon' src={sunrise} />
+        <span className='weather-data'>{weatherSunrise}</span>
+      </p>
+      <p className='weather-row'>
+        <img className='small-weather-icon' src={sunset} />
+        <span className='weather-data'>{weatherSunset}</span>
+      </p>
     </div>
   )
 }

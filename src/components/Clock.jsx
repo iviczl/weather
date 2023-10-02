@@ -27,9 +27,9 @@ export default function Clock({ place }) {
     return () => clearInterval(timeout)
   }, [])
   return (
-    <div>
-      <p>{hours}</p>
-      <p>{minutes}</p>
+    <div className='clock'>
+      <p className='clock-row'>{hours}</p>
+      <p className='clock-row'>{minutes}</p>
     </div>
   )
 }

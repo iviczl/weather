@@ -34,22 +34,19 @@ export default function Search() {
     }
   }, [])
 
-  // useEffect(() => {
-  //   if (!result.response) {
-  //     return
-  //   }
-  //   store.dispatch(setCapitals(result.response.map((item) => item.capital[0])))
-  // }, [result.response])
-
   useEffect(() => {
     const refreshList = async () => {
-      const list = store
-        .getState()
-        .capital.capitals.filter(
-          (capital) =>
-            capital && capital.toLowerCase().includes(searchText.toLowerCase())
-        )
-        .slice(0, 8)
+      const list =
+        searchText.length > 0
+          ? store
+              .getState()
+              .capital.capitals.filter(
+                (capital) =>
+                  capital &&
+                  capital.toLowerCase().includes(searchText.toLowerCase())
+              )
+              .slice(0, 8)
+          : []
       setSearchList(list)
     }
     refreshList()
@@ -65,6 +62,7 @@ export default function Search() {
           setSearchText(event.target.value)
           setIsCapitalSelected(false)
         }}
+        listVisible={!isCapitalSelected}
       />
       <SearchButton onClick={setCapital} visible={isCapitalSelected} />
     </div>

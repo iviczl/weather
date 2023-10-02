@@ -7,8 +7,12 @@ export default function Home() {
 
   return (
     <div>
-      <p onClick={() => navigate('/data')}>{selectedCapital}</p>
-      <button onClick={() => navigate('/search')}>+</button>
+      <p className='selected-capital' onClick={() => navigate('/data')}>
+        {selectedCapital}
+      </p>
+      <button className='plus' onClick={() => navigate('/search')}>
+        +
+      </button>
     </div>
   )
 }

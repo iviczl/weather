@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Search from './pages/Search'
 import Data from './pages/Data'
-import './App.css'
+import './assets/css/App.scss'
 import './assets/css/open-weather-icons.scss'
 
 function App() {
