@@ -36,7 +36,7 @@ export default function Data() {
   return (
     <div>
       <NavBar />
-      <Clock />
+      <Clock place={selectedCapital} />
       <p>{selectedCapital}</p>
       <p>
         <i className={`owi owi-${weatherIcon}`} />
