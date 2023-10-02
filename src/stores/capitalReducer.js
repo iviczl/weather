@@ -4,7 +4,7 @@ import { FeatureState } from './featureState'
 
 const initialState = {
   capitals: [],
-  selectedCapital: '',
+  selectedCapital: 'Budapest',
   state: FeatureState.IDLE,
   error: [],
 }
