@@ -1,4 +1,5 @@
 import { doFetch } from './fetch'
+import config from '../assets/config.json'
 
 export async function getWeather(
   abortController,
@@ -6,11 +7,11 @@ export async function getWeather(
   setError,
   params
 ) {
-  const apiKey = '7c7471bd537f0fca341ce9b058c2b225'
-  const { response, error } = await doFetch(
-    abortController,
-    `https://api.openweathermap.org/data/2.5/weather?appid=${apiKey}&units=metric&q=${params.capital}`
-  )
+  const apiKey = config.weatherService.apiKey
+  let uri = config.weatherService.uri
+  uri = uri.replace('${apiKey}', apiKey)
+  uri = uri.replace('${capital}', params.capital)
+  const { response, error } = await doFetch(abortController, uri)
   setResponse(response)
   setError(error)
 }

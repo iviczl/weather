@@ -1,0 +1,9 @@
+{
+  "weatherService": {
+    "apiKey": "7c7471bd537f0fca341ce9b058c2b225",
+    "uri": "https://api.openweathermap.org/data/2.5/weather?appid=${apiKey}&units=metric&q=${capital}"
+  },
+  "capitalService": {
+    "uri": "https://restcountries.com/v3.1/all?fields=capital"
+  }
+}

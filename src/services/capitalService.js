@@ -1,8 +1,6 @@
 import { doFetch } from './fetch'
+import config from '../assets/config.json'
 
 export function getCapitals(abortController) {
-  return doFetch(
-    abortController,
-    'https://restcountries.com/v3.1/all?fields=capital'
-  )
+  return doFetch(abortController, config.capitalService.uri)
 }

@@ -9,7 +9,7 @@ export function timeStringFromEpoch(epoch) {
 
 export function twoDigitTimeString(time) {
   let timeString = String(time)
-  if (timeString.length < 2) {
+  if (timeString.length === 1) {
     timeString = '0' + timeString
   }
   return timeString
