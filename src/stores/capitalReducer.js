@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getCapitals } from '../services/capitalService'
 import { FeatureState } from './featureState'
+import { listOnlySearchedCapitals } from '../assets/config.json'
 
 /**
  * initial state for capitals store
  */
 const initialState = {
   capitals: [],
+  searchedCapitals: [],
   selectedCapital: 'Budapest',
   state: FeatureState.IDLE,
   error: [],
@@ -23,6 +25,13 @@ const capitalSlice = createSlice({
   reducers: {
     capitalSelected(state, action) {
       state.selectedCapital = action.payload
+      // if the setting says we must only use the already searched capitals in the list
+      if (
+        listOnlySearchedCapitals &&
+        !state.searchedCapitals.some((capital) => capital === action.payload)
+      ) {
+        state.searchedCapitals.push(action.payload)
+      }
     },
   },
   extraReducers(builder) {
@@ -32,7 +41,9 @@ const capitalSlice = createSlice({
       })
       .addCase(capitalList.fulfilled, (state, action) => {
         state.status = FeatureState.SUCCEEDED
-        state.capitals = action.payload.response.map((item) => item.capital[0])
+        state.capitals = action.payload.response
+          .map((item) => item.capital.filter((capital) => capital)[0])
+          .filter((item) => item)
       })
       .addCase(capitalList.rejected, (state, action) => {
         state.status = FeatureState.REJECTED

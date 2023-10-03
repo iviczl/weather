@@ -62,6 +62,16 @@ $triple-font-size: 90px;
   display: flex;
   font-size: $normal-font-size;
   color: $normal-text-color;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $filter-text-color;
+    color: $normal-text-color;
+
+    .list-item-text-filter {
+      color: $normal-text-color;
+    }
+  }
 
   &-text-filter {
     color: $filter-text-color;

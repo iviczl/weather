@@ -7,18 +7,24 @@ import store from '../stores/store.js'
 import { capitalSelected } from '../stores/capitalReducer'
 import { useFetchToStore } from '../hooks/useFetch'
 import { capitalList } from '../stores/capitalReducer'
+import { listOnlySearchedCapitals } from '../assets/config.json'
 
 export default function Search() {
+  const capitalStore = store.getState().capital
   const [isCapitalSelected, setIsCapitalSelected] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [searchList, setSearchList] = useState([])
   const navigate = useNavigate()
 
-  // effect for loading capitals into store
+  // if (!listOnlySearchedCapitals) {
+  // effect for loading all the capitals into store
   useFetchToStore(capitalList)
+  // }
 
   const setCapital = () => {
-    store.dispatch(capitalSelected(searchText))
+    store.dispatch(
+      capitalSelected(searchText.charAt(0).toUpperCase() + searchText.slice(1))
+    )
     navigate('/')
   }
 
@@ -38,17 +44,18 @@ export default function Search() {
 
   useEffect(() => {
     const refreshList = async () => {
+      const allCapitals = listOnlySearchedCapitals
+        ? capitalStore.searchedCapitals
+        : capitalStore.capitals
       const list =
         searchText.length > 0
           ? new Array(
               ...new Set( // creating a set to avoid duplication
-                store
-                  .getState()
-                  .capital.capitals.filter(
-                    (capital) =>
-                      capital &&
-                      capital.toLowerCase().includes(searchText.toLowerCase())
-                  )
+                allCapitals.filter(
+                  (capital) =>
+                    capital &&
+                    capital.toLowerCase().includes(searchText.toLowerCase())
+                )
               )
             ).slice(0, 8)
           : []
@@ -65,7 +72,14 @@ export default function Search() {
         filterList={searchList}
         onChange={(event) => {
           setSearchText(event.target.value)
-          setIsCapitalSelected(false)
+          setIsCapitalSelected(
+            capitalStore.capitals.some(
+              (capital) =>
+                capital.toLowerCase() === event.target.value.toLowerCase()
+            )
+              ? true
+              : false
+          )
         }}
         listVisible={!isCapitalSelected}
       />
