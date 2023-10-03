@@ -47,6 +47,10 @@ $triple-font-size: 90px;
   }
 }
 
+.nav-block {
+  cursor: pointer;
+}
+
 .selected-capital {
   margin: 0;
   color: $filter-text-color;

@@ -7,7 +7,10 @@ export default function Home() {
 
   return (
     <div>
-      <p className='selected-capital' onClick={() => navigate('/data')}>
+      <p
+        className='selected-capital nav-block'
+        onClick={() => navigate('/data')}
+      >
         {selectedCapital}
       </p>
       <button className='plus' onClick={() => navigate('/search')}>
