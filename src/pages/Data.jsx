@@ -5,9 +5,9 @@ import { useFetch } from '../hooks/useFetch'
 import store from '../stores/store'
 import { timeStringFromEpoch } from '../utils/dateUtils'
 import { getWeather } from '../services/weatherService'
-import temperature from '../assets/temperature_weather_icon.svg'
-import sunrise from '../assets/sunrise_weather_icon.svg'
-import sunset from '../assets/sunset_weather_icon.svg'
+import temperature from '../assets/icons/temperature_weather_icon.svg'
+import sunrise from '../assets/icons/sunrise_weather_icon.svg'
+import sunset from '../assets/icons/sunset_weather_icon.svg'
 
 export default function Data() {
   const selectedCapital = store.getState().capital.selectedCapital
@@ -41,7 +41,7 @@ export default function Data() {
       <NavBar />
       <Clock place={selectedCapital} />
       <p className='selected-capital'>{selectedCapital}</p>
-      <p>
+      <p className='weather-icon'>
         <i className={`owi owi-${weatherIcon}`} />
       </p>
       <p className='description'>{weatherDescription}</p>

@@ -7,7 +7,7 @@ describe('nav bar test', () => {
   test('nav bar renders correctly', async () => {
     renderWithRouterAndStoreProvider(<NavBar />)
     const navLink = await screen.findByText('<')
-    expect(navLink).toBeDefined()
+    expect(navLink).toBeInTheDocument()
     expect(navLink.href).toBe('http://localhost:3000/')
   })
 })

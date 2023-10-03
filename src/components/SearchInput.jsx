@@ -15,6 +15,7 @@ export default function SearchInput({
     inputRef.current.focus()
   }, [])
   function list() {
+    // should not create any item if the list is not visible
     if (!listVisible) {
       return
     }
