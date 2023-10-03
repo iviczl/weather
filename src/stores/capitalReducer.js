@@ -2,6 +2,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getCapitals } from '../services/capitalService'
 import { FeatureState } from './featureState'
 
+/**
+ * initial state for capitals store
+ */
 const initialState = {
   capitals: [],
   selectedCapital: 'Budapest',

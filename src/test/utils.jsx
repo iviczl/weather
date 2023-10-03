@@ -4,6 +4,12 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import capitalReducer from '../stores/capitalReducer'
 
+/**
+ * renders a react component wrapped in BrowserRouter and store Provider
+ * @param {Object} ui
+ * @param {Object{preloadedState, store, ...renderOptions}} additiveParams
+ * @returns rendered component
+ */
 export function renderWithRouterAndStoreProvider(
   ui,
   {

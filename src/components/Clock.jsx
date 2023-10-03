@@ -6,6 +6,7 @@ import {
 
 export default function Clock({ place }) {
   const timezoneOffset = place ? getTimeZoneOffsetForPlace(place) : 0
+
   const getActualTime = () => {
     let time = new Date()
     time.setTime(time.getTime() - timezoneOffset * 60000)

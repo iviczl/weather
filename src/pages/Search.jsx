@@ -14,6 +14,7 @@ export default function Search() {
   const [searchList, setSearchList] = useState([])
   const navigate = useNavigate()
 
+  // effect for loading capitals into store
   useFetchToStore(capitalList)
 
   const setCapital = () => {
@@ -27,6 +28,7 @@ export default function Search() {
   }
 
   useEffect(() => {
+    // subscription to a custom event of the SearchInput
     document.addEventListener('item-selected', itemSelected)
 
     return () => {
@@ -39,7 +41,7 @@ export default function Search() {
       const list =
         searchText.length > 0
           ? new Array(
-              ...new Set(
+              ...new Set( // creating a set to avoid duplication
                 store
                   .getState()
                   .capital.capitals.filter(
