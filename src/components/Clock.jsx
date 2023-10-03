@@ -8,10 +8,10 @@ export default function Clock({ place }) {
   const timezoneOffset = place ? getTimeZoneOffsetForPlace(place) : 0
   const getActualTime = () => {
     let time = new Date()
-    time.setMinutes(time.getMinutes() + timezoneOffset)
+    time.setTime(time.getTime() - timezoneOffset * 60000)
     return {
-      hours: twoDigitTimeString(time.getHours()),
-      minutes: twoDigitTimeString(time.getMinutes()),
+      hours: twoDigitTimeString(time.getUTCHours()),
+      minutes: twoDigitTimeString(time.getUTCMinutes()),
     }
   }
 
