@@ -6,7 +6,7 @@ export default function Home() {
   const navigate = useNavigate()
 
   return (
-    <div>
+    <div className='home-container'>
       <p
         className='selected-capital nav-block'
         onClick={() => navigate('/data')}

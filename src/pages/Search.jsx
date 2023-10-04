@@ -65,7 +65,7 @@ export default function Search() {
   }, [searchText])
 
   return (
-    <div>
+    <div className='search-container'>
       <NavBar />
       <SearchInput
         filterText={searchText}
@@ -73,6 +73,7 @@ export default function Search() {
         onChange={(event) => {
           setSearchText(event.target.value)
           setIsCapitalSelected(
+            // only real capitals can be selected
             capitalStore.capitals.some(
               (capital) =>
                 capital.toLowerCase() === event.target.value.toLowerCase()

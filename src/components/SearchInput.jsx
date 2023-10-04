@@ -34,7 +34,7 @@ export default function SearchInput({
     })
   }
   return (
-    <div>
+    <div className='search-input-container'>
       <input
         type='text'
         className='search-input'
@@ -42,7 +42,7 @@ export default function SearchInput({
         onChange={onChange}
         ref={inputRef}
       />
-      <ul>{list()}</ul>
+      <ul className='search-list'>{list()}</ul>
     </div>
   )
 }

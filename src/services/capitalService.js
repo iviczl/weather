@@ -2,7 +2,7 @@ import { doFetch } from './fetch'
 import config from '../assets/config.json'
 
 /**
- * gets capitals from a third party service
+ * gets real capitals from a third party web API
  * @param {AbortController} abortController
  * @returns a fetch Promise
  */

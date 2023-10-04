@@ -8,7 +8,10 @@ import { listOnlySearchedCapitals } from '../assets/config.json'
  */
 const initialState = {
   capitals: [],
-  searchedCapitals: [],
+  // if the setting says we must only use the already searched capitals in the list
+  searchedCapitals: listOnlySearchedCapitals
+    ? JSON.parse(localStorage.getItem('searchedCapitals') || '[]')
+    : [],
   selectedCapital: 'Budapest',
   state: FeatureState.IDLE,
   error: [],
@@ -31,6 +34,10 @@ const capitalSlice = createSlice({
         !state.searchedCapitals.some((capital) => capital === action.payload)
       ) {
         state.searchedCapitals.push(action.payload)
+        localStorage.setItem(
+          'searchedCapitals',
+          JSON.stringify(state.searchedCapitals)
+        )
       }
     },
   },
@@ -47,7 +54,7 @@ const capitalSlice = createSlice({
       })
       .addCase(capitalList.rejected, (state, action) => {
         state.status = FeatureState.REJECTED
-        state.error.push(action.payload.error)
+        state.error.push(action.error)
       })
   },
 })

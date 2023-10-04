@@ -15,11 +15,17 @@ $triple-font-size: 90px;
 }
 
 #root {
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
   background-color: $normal-background-color;
+  display: flex;
+  justify-content: center;
+}
+
+.home-container {
+  margin-top: 15%;
 }
 
 .plus {
@@ -31,6 +37,9 @@ $triple-font-size: 90px;
   font-size: $double-font-size;
 }
 
+.search-container {
+  max-width: 100%;
+}
 .search-input {
   background-color: $normal-background-color;
   color: $filter-text-color;
@@ -40,7 +49,7 @@ $triple-font-size: 90px;
   border-right: 0;
   border-bottom: solid 1px $normal-text-color;
   font-size: $normal-font-size;
-  max-width: 95%;
+  max-width: 100%;
 
   &:focus-visible {
     outline: 0;
@@ -58,8 +67,22 @@ $triple-font-size: 90px;
   font-weight: bold;
 }
 
+.search-input-container {
+  margin-top: 15%;
+  max-width: 95%;
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  // justify-content: center;
+}
+
+.search-list {
+  justify-self: start;
+}
+
 .list-item {
   display: flex;
+  max-width: 95%;
   font-size: $normal-font-size;
   color: $normal-text-color;
   cursor: pointer;
@@ -79,7 +102,10 @@ $triple-font-size: 90px;
 }
 
 .nav-bar {
+  max-width: 95%;
+  margin-inline: auto;
   display: flex;
+  height: fit-content;
 }
 
 .nav-link {
@@ -94,6 +120,7 @@ $triple-font-size: 90px;
 }
 
 .clock {
+  margin-top: 15%;
   font-size: $large-font-size;
   color: $nav-text-color;
 
