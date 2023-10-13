@@ -1,3 +1,8 @@
+export function getLocalTimeFromEpoch(epoch, timeZoneOffset) {
+  const time = new Date((epoch + timeZoneOffset) * 1000)
+  return { hours: time.getUTCHours(), minutes: time.getUTCMinutes() }
+}
+
 export function timeStringFromEpoch(epoch) {
   const time = new Date(epoch * 1000)
   return (
@@ -5,6 +10,10 @@ export function timeStringFromEpoch(epoch) {
     ':' +
     twoDigitTimeString(time.getMinutes())
   )
+}
+
+export function timeStringFromTimeObject(time) {
+  return twoDigitTimeString(time.hours) + ':' + twoDigitTimeString(time.minutes)
 }
 
 export function twoDigitTimeString(time) {

@@ -1,18 +1,13 @@
 import { useEffect, useState } from 'react'
-import {
-  getTimeZoneOffsetForPlace,
-  twoDigitTimeString,
-} from '../utils/dateUtils'
+import { twoDigitTimeString } from '../utils/dateUtils'
 
-export default function Clock({ place }) {
-  const timezoneOffset = place ? getTimeZoneOffsetForPlace(place) : 0
-
+export default function Clock({ timeZone }) {
   const getActualTime = () => {
-    let time = new Date()
-    time.setTime(time.getTime() - timezoneOffset * 60000)
+    const time = new Date((new Date().getTime() / 1000 + timeZone) * 1000)
+    // console.log(time.getHours())
     return {
-      hours: twoDigitTimeString(time.getUTCHours()),
-      minutes: twoDigitTimeString(time.getUTCMinutes()),
+      hours: twoDigitTimeString(time.getHours()),
+      minutes: twoDigitTimeString(time.getMinutes()),
     }
   }
 
@@ -26,7 +21,7 @@ export default function Clock({ place }) {
       setMinutes(time.minutes)
     }, 1000)
     return () => clearInterval(timeout)
-  }, [])
+  }, [timeZone])
   return (
     <div className='clock'>
       <p className='clock-row'>{hours}</p>
