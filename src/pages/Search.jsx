@@ -5,9 +5,9 @@ import SearchInput from '../components/SearchInput'
 import SearchButton from '../components/SearchButton'
 import store from '../stores/store.js'
 import { capitalSelected } from '../stores/capitalReducer'
-import { useFetchToStore } from '../hooks/useFetch'
-import { capitalList } from '../stores/capitalReducer'
 import { listOnlySearchedCapitals } from '../assets/config.json'
+import { useQuery } from '@tanstack/react-query'
+import { queryCapitals } from '../services/capitalService'
 
 export default function Search() {
   const capitalStore = store.getState().capital
@@ -16,10 +16,17 @@ export default function Search() {
   const [searchList, setSearchList] = useState([])
   const navigate = useNavigate()
 
-  // if (!listOnlySearchedCapitals) {
-  // effect for loading all the capitals into store
-  useFetchToStore(capitalList)
-  // }
+  // using react-query to load capitals
+  const { data } = useQuery({
+    queryKey: ['capitals'],
+    queryFn: async ({ signal }) =>
+      (await queryCapitals(signal))
+        .map((item) => item.capital.filter((capital) => capital)[0])
+        .filter((item) => item),
+  })
+
+  // // effect for loading all the capitals into store
+  // useFetchToStore(capitalList)
 
   const setCapital = () => {
     store.dispatch(
@@ -46,7 +53,7 @@ export default function Search() {
     const refreshList = async () => {
       const allCapitals = listOnlySearchedCapitals
         ? capitalStore.searchedCapitals
-        : capitalStore.capitals
+        : data
       const list =
         searchText.length > 0
           ? new Array(
@@ -74,7 +81,7 @@ export default function Search() {
           setSearchText(event.target.value)
           setIsCapitalSelected(
             // only real capitals can be selected
-            capitalStore.capitals.some(
+            data?.some(
               (capital) =>
                 capital.toLowerCase() === event.target.value.toLowerCase()
             )

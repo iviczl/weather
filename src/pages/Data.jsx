@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import Clock from '../components/Clock'
 import NavBar from '../components/NavBar'
-import { useFetch } from '../hooks/useFetch'
 import {
   getLocalTimeFromEpoch,
   timeStringFromTimeObject,
 } from '../utils/dateUtils'
-import { getWeather } from '../services/weatherService'
+import { queryWeather } from '../services/weatherService'
 import temperature from '../assets/icons/temperature_weather_icon.svg'
 import sunrise from '../assets/icons/sunrise_weather_icon.svg'
 import sunset from '../assets/icons/sunset_weather_icon.svg'
 import { useSelector } from 'react-redux'
+import { useQuery } from '@tanstack/react-query'
 
 export default function Data() {
   const selectedCapital = useSelector((state) => state.capital.selectedCapital)
@@ -21,14 +21,21 @@ export default function Data() {
   const [weatherSunset, setWeatherSunset] = useState('')
   const [clockTimeZone, setClockTimeZone] = useState(0)
 
-  const { response } = useFetch(getWeather, { capital: selectedCapital })
+  // const { response } = useFetch(getWeather, { capital: selectedCapital })
+
+  // using react-query to load weather data
+  const { data } = useQuery({
+    queryKey: ['weather'],
+    queryFn: async ({ signal }) =>
+      queryWeather(signal, { capital: selectedCapital }),
+  })
 
   useEffect(() => {
-    if (!response) {
+    if (!data) {
       return
     }
 
-    const { weather, main, sys, timezone } = response
+    const { weather, main, sys, timezone } = data
     const { icon, description } = weather[0]
     const { temp } = main
     const { sunrise, sunset } = sys
@@ -43,7 +50,7 @@ export default function Data() {
     setWeatherSunset(
       timeStringFromTimeObject(getLocalTimeFromEpoch(sunset, timezone))
     )
-  }, [response])
+  }, [data])
 
   return (
     <div>

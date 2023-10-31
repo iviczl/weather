@@ -1,4 +1,4 @@
-import { doFetch } from './fetch'
+import { doFetch, query } from './fetch'
 import config from '../assets/config.json'
 
 /**
@@ -21,4 +21,20 @@ export async function getWeather(
   const { response, error } = await doFetch(abortController, uri)
   setResponse(response)
   setError(error)
+}
+
+/**
+ * gets the actual weather conditions from a third party service for the given capital and sets the result/error in an asynchronous manner
+ * @param {AbortSignal} signal
+ * @param {function} setResponse
+ * @param {function} setError
+ * @param {Object{capital:string}} params
+ */
+export async function queryWeather(signal, params) {
+  const apiKey = config.weatherService.apiKey
+  let uri = config.weatherService.uri
+  uri = uri.replace('${apiKey}', apiKey)
+  uri = uri.replace('${capital}', params.capital)
+  const { response, error } = await query(signal, uri)
+  return response
 }
